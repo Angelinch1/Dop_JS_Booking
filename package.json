@@ -17,6 +17,7 @@
   ],
   "license": "UNLICENSED",
   "devDependencies": {
-    "@playwright/test": "^1.51.0"
+    "@playwright/test": "^1.51.0",
+    "dotenv": "^16.4.5"
   }
 }
