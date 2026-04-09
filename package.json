@@ -1,0 +1,22 @@
+{
+  "name": "jsdopbooking",
+  "version": "1.0.0",
+  "description": "E2E tests with Playwright (Page Object)",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "e2e",
+    "page-object"
+  ],
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@playwright/test": "^1.51.0"
+  }
+}
