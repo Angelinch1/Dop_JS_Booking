@@ -1,6 +1,21 @@
 # JSDopbooking
 
+E2E на **Playwright** (Page Object), отчёты: HTML (`npm run report`) и Allure (`npm run allure:report`).
 
+## Запуск тестов
+
+1. `npm install`, затем `npx playwright install chromium`
+2. Скопировать `.env.example` в `.env`; для входа через шапку задать `BASKET_TEST_EMAIL` и `BASKET_TEST_PASSWORD`
+3. Команды:
+   - `npm run test:smoke` — дымовая проверка `BASE_URL`
+   - `npm run test:basket-auth` — e2e `authInBag2` (если в `.env` нет кредов — тест помечается как *skipped*)
+   - `npm run test:headed -- tests/basket-auth.spec.js` — то же с видимым браузером
+
+Опционально: `BASKET_AUTH_ENTRY_URL` — путь открытия перед `authInBag2` (по умолчанию `/`).
+
+На Windows, если PowerShell ругается на `npm.ps1`, в проекте задан терминал **Command Prompt** (`.vscode/settings.json`).
+
+---
 
 ## Getting started
 
