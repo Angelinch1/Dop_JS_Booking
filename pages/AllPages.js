@@ -1,4 +1,3 @@
-// @ts-check
 const { expect } = require('@playwright/test');
 const { attachment, step } = require('allure-js-commons');
 const { BasePage } = require('./BasePage');
@@ -53,7 +52,6 @@ class AllPages extends BasePage {
    * (например, после шагов «добавить в корзину» — URL каждый раз свой).
    */
   async authInBag() {
-    const { email, password } = this._basketCredentials();
     await step('Авторизация в корзине', async () => {
       await this.basketLoginBanner.click();
       const emailInput = this.page.locator("input[name='LoginInput.Email']");
@@ -69,9 +67,7 @@ class AllPages extends BasePage {
     });
   }
 
-  /** @Step("Авторизация в корзине") — вариант через иконку пользователя */
   async authInBag2() {
-    const { email, password } = this._basketCredentials();
     await step('Авторизация в корзине', async () => {
       await this.page.locator('span.v-icon-user-14').click();
       const emailInput = this.page.locator("input[name='LoginInput.Email']");
