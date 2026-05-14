@@ -35,7 +35,7 @@ const defaultVideo = recordAll ? 'on' : 'on-first-retry';
  * @see https://playwright.dev/docs/test-configuration
  */
 module.exports = defineConfig({
-  testDir: './tests',
+  testDir: './test',
   timeout: process.env.TEST_TIMEOUT ? Number(process.env.TEST_TIMEOUT) : undefined,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,

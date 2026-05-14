@@ -5,8 +5,7 @@
   "private": true,
   "scripts": {
     "test": "playwright test",
-    "test:smoke": "playwright test tests/smoke.spec.js",
-    "test:basket-auth": "playwright test tests/basket-auth.spec.js",
+    "test:smoke": "playwright test test/smoke.spec.js",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
