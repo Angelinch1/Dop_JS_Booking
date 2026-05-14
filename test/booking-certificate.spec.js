@@ -7,8 +7,4 @@ test.describe('Бронирование сертификата', () => {
     await all.openBookingSection('certificate');
   });
 
-  test.fixme('негативный сценарий: валидация данных получателя / суммы', async ({ page }) => {
-    const all = new AllPages(page);
-    await all.openBookingSection('certificate');
-  });
 });

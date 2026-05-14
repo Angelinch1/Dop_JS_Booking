@@ -7,8 +7,4 @@ test.describe('Бронирование яхт', () => {
     await all.openBookingSection('yachts');
   });
 
-  test.fixme('негативный сценарий: нет доступных дат / валидация', async ({ page }) => {
-    const all = new AllPages(page);
-    await all.openBookingSection('yachts');
-  });
 });

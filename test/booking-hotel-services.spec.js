@@ -6,9 +6,4 @@ test.describe('Бронирование услуг в отеле', () => {
     const all = new AllPages(page);
     await all.openBookingSection('hotelServices');
   });
-
-  test.fixme('негативный сценарий: валидация / конфликт по времени', async ({ page }) => {
-    const all = new AllPages(page);
-    await all.openBookingSection('hotelServices');
-  });
 });
