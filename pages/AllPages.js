@@ -85,6 +85,18 @@ class AllPages extends BasePage {
     await this._pickCalendarPopup();
   }
 
+  async hotelPickDate() {
+    await this.page.getByText('Дата Выбрать').click();
+    await this._pause(1000);
+    await this._pickCalendarPopup();
+  }
+
+  async yachtPickDate() {
+    await this.page.getByText('Дата Выбрать').click();
+    await this._pause(1000);
+    await this._pickCalendarPopup();
+  }
+
   async excursionClickSearch() {
     await this.page.locator('button.v-search-button').click();
     await this.page.waitForLoadState('domcontentloaded');
