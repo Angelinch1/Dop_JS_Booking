@@ -12,15 +12,15 @@ test.describe('Бронирование экскурсий', () => {
     });
 
     await test.step('Выбрать страну', async () => {
-      await all.excursionSelectCountry('Турция');
+      await all.excursionSelectCountry('Египет');
     });
 
     await test.step('Выбрать город', async () => {
-      await all.excursionSelectCity('Анталья');
+      await all.excursionSelectCity('Шарм-эль-Шейх');
     });
 
     await test.step('Выбрать дату', async () => {
-      await all.excursionPickDate();
+      await all.excursionPickDate('Дата экскурсии');
     });
 
     await test.step('Нажать «Найти»', async () => {
@@ -28,9 +28,8 @@ test.describe('Бронирование экскурсий', () => {
     });
 
     await test.step('Дождаться выдачи', async () => {
-      await all.closeBanners();
       await expect(page).toHaveURL(/searchexcursions/i);
-      await expect(page.locator('iframe').first()).toBeVisible({ timeout: 30_000 });
+      await all.reloadSearchResults();
     });
   });
 });

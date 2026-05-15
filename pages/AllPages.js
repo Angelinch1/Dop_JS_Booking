@@ -39,37 +39,29 @@ class AllPages extends BasePage {
     await p.getByRole('button', { name: /Нет,?\s*спасибо/i }).first().click({ timeout: 1000 }).catch(() => {});
   }
 
-  async _pickDepartureItem(name) {
-    const option = this.page.getByRole('option', { name, exact: true });
-    if ((await option.count()) > 0) {
-      await option.first().click();
-      return;
-    }
-    await this.page
-      .locator('motion.v-departure .v-departure__elem, div.v-departure__elem')
-      .filter({ hasText: name })
-      .last()
-      .click({ force: true });
+  /** Дождаться выдачи, подождать 3 с, перезагрузить, снова дождаться выдачи */
+  async reloadSearchResults() {
+    await this.page.getByText(/найдено/i).waitFor({ state: 'visible', timeout: 30000 });
+    await this.page.waitForTimeout(3000);
+    await this.page.reload();
+    await this.page.getByText(/найдено/i).waitFor({ state: 'visible', timeout: 30000 });
   }
 
-  async excursionSelectCountry(country = 'Турция') {
+  async excursionSelectCountry(country = 'Египет') {
     await this.page.locator('.v-departure__pinput').first().click();
     await this._pause(1000);
-    await this._pickDepartureItem(country);
+    await this.page.getByText(country, { exact: true }).click();
     await this._pause();
   }
 
-  async excursionSelectCity(city = 'Анталья') {
+  async excursionSelectCity(city = 'Шарм-эль-Шейх') {
     await this.page.locator('#city-excursions-field-input > .v-departure__pinput').click();
     await this._pause(1000);
-    await this._pickDepartureItem(city);
+    await this.page.getByText(city, { exact: true }).click();
     await this._pause();
   }
 
-  async excursionPickDate() {
-    const dateField = this.page.locator('.calendar__field').filter({ hasText: 'Дата экскурсии' });
-    await dateField.locator('.calendar__field-button').click();
-    await this._pause(1000);
+  async _pickCalendarPopup() {
     const popup = this.page.locator('motion.div.calendar-popup, div.calendar-popup').first();
     await popup.waitFor({ state: 'visible', timeout: 10000 });
     const nextMonth = popup.locator('.calendar-popup__arrow-right');
@@ -79,11 +71,23 @@ class AllPages extends BasePage {
     await this._pause();
   }
 
+  async excursionPickDate(dateLabel = 'Дата экскурсии') {
+    const dateField = this.page.locator('.calendar__field').filter({ hasText: dateLabel });
+    await dateField.locator('.calendar__field-button').click();
+    await this._pause(1000);
+    await this._pickCalendarPopup();
+  }
+
+  async airportPickDate() {
+    const dateField = this.page.locator('.calendar__field').filter({ hasText: 'Даты поездки' });
+    await dateField.locator('.calendar__field-button').click();
+    await this._pause(1000);
+    await this._pickCalendarPopup();
+  }
+
   async excursionClickSearch() {
     await this.page.locator('button.v-search-button').click();
     await this.page.waitForLoadState('domcontentloaded');
-    await this.closeBanners();
-    await this._pause();
   }
 }
 
