@@ -5,7 +5,7 @@ E2E на **Playwright** (Page Object), отчёты: HTML (`npm run report`) и 
 ## Структура
 
 - `test/` — спеки Playwright
-- `pages/` — Page Object (`BasePage`, `AllPages`: вход в разделы `openBookingSection`, корзина, данные туриста)
+- `pages/` — Page Object: `BasePage`, **`SearchPage`** (поиск: форма и выдача), **`AuthPage`** (авторизация), **`BasketPage`** (корзина)
 - `config/bookingUrls.js` — URL разделов (переопределение через `BOOKING_*` в `.env`)
 
 ## Запуск тестов

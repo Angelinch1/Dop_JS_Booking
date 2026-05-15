@@ -1,7 +1,9 @@
+const { expect } = require('@playwright/test');
 const { BasePage } = require('./BasePage');
 const bookingUrls = require('../config/bookingUrls');
 
-class AllPages extends BasePage {
+/** Поиск туров / доп. услуг: форма страна–город–дата, выдача. */
+class SearchPage extends BasePage {
   constructor(page) {
     super(page);
     this._bannerHandlerInstalled = false;
@@ -47,17 +49,50 @@ class AllPages extends BasePage {
     await this.page.getByText(/найдено/i).waitFor({ state: 'visible', timeout: 30000 });
   }
 
-  async excursionSelectCountry(country = 'Египет') {
+  /** Случайная карточка и добавление в корзину */
+  async addRandomOfferToCart() {
+    let btns = this.page.locator('button.excursion-card__content-btn');
+    if ((await btns.count()) === 0) {
+      btns = this.page.frameLocator('iframe').first().locator('button.excursion-card__content-btn');
+    }
+    await btns.first().waitFor({ state: 'visible', timeout: 20000 });
+    const n = await btns.count();
+    const i = Math.floor(Math.random() * n);
+    await btns.nth(i).scrollIntoViewIfNeeded();
+    await btns.nth(i).click();
+
+    const modal = this.page.locator('.excursion-modal');
+    await modal.waitFor({ state: 'visible', timeout: 20000 });
+
+    const calPopup = modal.locator('.calendar-popup');
+    await modal.locator('.excursion-modal-main__buttons .calendar__field-button').click();
+    await calPopup.waitFor({ state: 'visible', timeout: 10000 });
+    await modal
+      .locator('.calendar-popup__cell-case:not(.calendar-popup__cell-gray) span.calendar-popup__text')
+      .first()
+      .click();
+
+    const continueBtn = modal.getByRole('button', { name: 'Продолжить' });
+    await expect(continueBtn).toBeEnabled({ timeout: 15000 });
+    const [bookingTab] = await Promise.all([
+      this.page.context().waitForEvent('page', { timeout: 30000 }),
+      continueBtn.click(),
+    ]);
+    await bookingTab.waitForLoadState('domcontentloaded');
+  }
+
+  async selectCountry(country = 'Египет') {
     await this.page.locator('.v-departure__pinput').first().click();
     await this._pause(1000);
     await this.page.getByText(country, { exact: true }).click();
     await this._pause();
   }
 
-  async excursionSelectCity(city = 'Шарм-эль-Шейх') {
+  async selectCity(city = 'Шарм-эль-Шейх') {
     await this.page.locator('#city-excursions-field-input > .v-departure__pinput').click();
     await this._pause(1000);
-    await this.page.getByText(city, { exact: true }).click();
+    await this.closeBanners();
+    await this.page.getByText(city, { exact: true }).last().click();
     await this._pause();
   }
 
@@ -97,10 +132,10 @@ class AllPages extends BasePage {
     await this._pickCalendarPopup();
   }
 
-  async excursionClickSearch() {
+  async clickSearch() {
     await this.page.locator('button.v-search-button').click();
     await this.page.waitForLoadState('domcontentloaded');
   }
 }
 
-module.exports = { AllPages };
+module.exports = { SearchPage };

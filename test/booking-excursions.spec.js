@@ -1,35 +1,39 @@
 const { test, expect } = require('@playwright/test');
-const { AllPages } = require('../pages/AllPages');
+const { SearchPage } = require('../pages/SearchPage');
 
 test.describe('Бронирование экскурсий', () => {
-  test('поиск экскурсий', async ({ page }) => {
+  test('Добавление в корзину экскурсий', async ({ page }) => {
     test.setTimeout(90_000);
 
-    const all = new AllPages(page);
+    const search = new SearchPage(page);
 
     await test.step('Открыть страницу поиска экскурсий', async () => {
-      await all.openBookingSection('excursions');
+      await search.openBookingSection('excursions');
     });
 
     await test.step('Выбрать страну', async () => {
-      await all.excursionSelectCountry('Египет');
+      await search.selectCountry('Египет');
     });
 
     await test.step('Выбрать город', async () => {
-      await all.excursionSelectCity('Шарм-эль-Шейх');
+      await search.selectCity('Шарм-эль-Шейх');
     });
 
     await test.step('Выбрать дату', async () => {
-      await all.excursionPickDate('Дата экскурсии');
+      await search.excursionPickDate('Дата экскурсии');
     });
 
     await test.step('Нажать «Найти»', async () => {
-      await all.excursionClickSearch();
+      await search.clickSearch();
     });
 
     await test.step('Дождаться выдачи', async () => {
       await expect(page).toHaveURL(/searchexcursions/i);
-      await all.reloadSearchResults();
+      await search.reloadSearchResults();
+    });
+
+    await test.step('Добавить в корзину', async () => {
+      await search.addRandomOfferToCart();
     });
   });
 });

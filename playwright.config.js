@@ -59,10 +59,13 @@ if (shouldUseTestItReporter()) {
 module.exports = defineConfig({
   testDir: './test',
   timeout: process.env.TEST_TIMEOUT ? Number(process.env.TEST_TIMEOUT) : undefined,
-  fullyParallel: true,
+  /** По одному тесту за раз (без нескольких вкладок). Параллель: PLAYWRIGHT_WORKERS=4 npx playwright test */
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.PLAYWRIGHT_WORKERS
+    ? Number(process.env.PLAYWRIGHT_WORKERS)
+    : 1,
   reporter: reporters,
   use: {
     baseURL: process.env.BASE_URL || 'https://fstravel.com',

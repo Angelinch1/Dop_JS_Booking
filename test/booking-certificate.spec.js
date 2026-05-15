@@ -1,10 +1,10 @@
 const { test } = require('@playwright/test');
-const { AllPages } = require('../pages/AllPages');
+const { SearchPage } = require('../pages/SearchPage');
 
 test.describe('Бронирование сертификата', () => {
   test.fixme('основной сценарий: оформление сертификата', async ({ page }) => {
-    const all = new AllPages(page);
-    await all.openBookingSection('certificate');
+    const search = new SearchPage(page);
+    await search.openBookingSection('certificate');
   });
 
 });
