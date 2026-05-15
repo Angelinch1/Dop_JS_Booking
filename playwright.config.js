@@ -1,6 +1,7 @@
 // @ts-check
 require('dotenv').config();
 const { defineConfig, devices } = require('@playwright/test');
+const { testItPlaywrightReporter, shouldUseTestItReporter } = require('./config');
 
 /** @param {string | undefined} raw @param {import('@playwright/test').TraceMode} fallback */
 function traceModeFromEnv(raw, fallback) {
@@ -31,6 +32,27 @@ const recordAll =
 const defaultTrace = recordAll ? 'on' : 'on-first-retry';
 const defaultVideo = recordAll ? 'on' : 'on-first-retry';
 
+/** @type {import('@playwright/test').ReporterDescription[]} */
+const reporters = [
+  ['html', { open: 'never' }],
+  ['list'],
+  [
+    'allure-playwright',
+    {
+      resultsDir: 'allure-results',
+      detail: true,
+      suiteTitle: true,
+      environmentInfo: {
+        os_platform: process.platform,
+        node_version: process.version,
+      },
+    },
+  ],
+];
+if (shouldUseTestItReporter()) {
+  reporters.push(testItPlaywrightReporter);
+}
+
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
@@ -41,22 +63,7 @@ module.exports = defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: [
-    ['html', { open: 'never' }],
-    ['list'],
-    [
-      'allure-playwright',
-      {
-        resultsDir: 'allure-results',
-        detail: true,
-        suiteTitle: true,
-        environmentInfo: {
-          os_platform: process.platform,
-          node_version: process.version,
-        },
-      },
-    ],
-  ],
+  reporter: reporters,
   use: {
     baseURL: process.env.BASE_URL || 'https://fstravel.com',
     actionTimeout: process.env.ACTION_TIMEOUT ? Number(process.env.ACTION_TIMEOUT) : undefined,

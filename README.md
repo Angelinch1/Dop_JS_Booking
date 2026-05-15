@@ -13,7 +13,7 @@ E2E на **Playwright** (Page Object), отчёты: HTML (`npm run report`) и 
 1. `npm install`, затем `npx playwright install chromium`
 2. Скопировать `.env.example` в `.env`; для сценариев с корзиной задать `BASKET_TEST_EMAIL` и `BASKET_TEST_PASSWORD`
 3. Команды:
-   - `npm run test:smoke` — дымовая проверка `BASE_URL`
+   - `npm test` — полный прогон Playwright
    - `npm run test:headed` — прогон с видимым браузером
 
 На Windows, если PowerShell ругается на `npm.ps1`, в Cursor/VS Code можно в пользовательских настройках задать терминал по умолчанию **Command Prompt** (`terminal.integrated.defaultProfile.windows`).
