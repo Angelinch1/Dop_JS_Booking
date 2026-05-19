@@ -34,9 +34,12 @@ const defaultVideo = recordAll ? 'on' : 'on-first-retry';
 
 /** @type {import('@playwright/test').ReporterDescription[]} */
 const reporters = [
+  ['line'],
   ['html', { open: 'never' }],
-  ['list'],
-  [
+];
+
+if (String(process.env.ALLURE_REPORT || '').toLowerCase() === '1' || process.env.CI) {
+  reporters.push([
     'allure-playwright',
     {
       resultsDir: 'allure-results',
@@ -47,8 +50,9 @@ const reporters = [
         node_version: process.version,
       },
     },
-  ],
-];
+  ]);
+}
+
 if (shouldUseTestItReporter()) {
   reporters.push(testItPlaywrightReporter);
 }

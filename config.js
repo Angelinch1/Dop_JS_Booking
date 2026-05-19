@@ -54,6 +54,7 @@ function isTestItAdapterInstalled() {
 
 function shouldUseTestItReporter() {
   if (!isTestItAdapterInstalled()) return false;
+  if (String(process.env.TESTIT_REPORT || '').toLowerCase() === '0') return false;
   const url = (process.env.TMS_URL || process.env.URL)?.trim();
   const token = (process.env.TMS_PRIVATE_TOKEN || process.env.USER_PRIVATE_TOKEN)?.trim();
   return Boolean(url && token);

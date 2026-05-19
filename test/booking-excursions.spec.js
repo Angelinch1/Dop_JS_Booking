@@ -1,9 +1,10 @@
 const { test, expect } = require('@playwright/test');
 const { SearchPage } = require('../pages/SearchPage');
+const { AuthPage } = require('../pages/AuthPage');
 
 test.describe('Бронирование экскурсий', () => {
   test('Добавление в корзину экскурсий', async ({ page }) => {
-    test.setTimeout(90_000);
+    test.setTimeout(120_000);
 
     const search = new SearchPage(page);
 
@@ -29,11 +30,26 @@ test.describe('Бронирование экскурсий', () => {
 
     await test.step('Дождаться выдачи', async () => {
       await expect(page).toHaveURL(/searchexcursions/i);
-      await search.reloadSearchResults();
+      await search.waitForSearchResults();
     });
 
+    let basket;
     await test.step('Добавить в корзину', async () => {
-      await search.addRandomOfferToCart();
+      basket = await search.addRandomOfferToCart();
+    });
+
+    await test.step('Авторизация в корзине', async () => {
+      const auth = new AuthPage(basket.page);
+      await auth.authInBag();
+    });
+
+    await test.step('Страница корзины после авторизации', async () => {
+      await basket.expectCartVisible();
+    });
+
+    await test.step('Заполнение данных в корзине', async () => {
+      await basket.fillTouristData();
+      await basket.fillHotelStay();
     });
   });
 });
