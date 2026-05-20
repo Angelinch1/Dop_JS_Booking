@@ -22,10 +22,16 @@ class BasketPage extends BasePage {
     await expect(this.page.locator('body')).toBeVisible({ timeout: 15_000 });
   }
 
-  async booking() {
-    const btn = this.page.locator('div.theme-yellow-booking').filter({ visible: true }).first();
-    await expect(btn).toBeVisible({ timeout: 10_000 });
+  async _clickBookButton() {
+    const btn = this.page.locator('.v-button').first();
+    await btn.scrollIntoViewIfNeeded();
+    await expect(btn).toBeEnabled({ timeout: 10_000 });
+    await this._pause();
     await btn.click();
+  }
+
+  async booking() {
+    await this._clickBookButton();
   }
 
   async _pause(ms = 1000) {
@@ -52,11 +58,15 @@ class BasketPage extends BasePage {
     await hotelField.fill(hotel);
   }
 
-  async bookingCertificates() {
-    const btn = this.page.locator('div.theme-yellow-booking').filter({ visible: true }).first();
-    await btn.scrollIntoViewIfNeeded();
-    await expect(btn).toBeEnabled();
-    await btn.click();
+  async bookingCertificate() {
+    await this._clickBookButton();
+  }
+
+  /** Страница успешного бронирования */
+  async expectBookingSuccessPage() {
+    const header = this.page.locator('h4.bookingPay__header-text');
+    await header.waitFor({ state: 'visible', timeout: 20_000 });
+    await this.page.waitForTimeout(2000);
   }
 
   async getBookingNumberFromPayHeader() {

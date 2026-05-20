@@ -3,7 +3,7 @@ const { SearchPage } = require('../pages/SearchPage');
 const { AuthPage } = require('../pages/AuthPage');
 
 test.describe('Бронирование услуг в аэропорту', () => {
-  test('добавление в корзину услуг в аэропорту', async ({ page }) => {
+  test('Бронирование услуг в аэропорту', async ({ page }) => {
     test.setTimeout(120_000);
 
     const search = new SearchPage(page);
@@ -49,6 +49,14 @@ test.describe('Бронирование услуг в аэропорту', () =>
 
     await test.step('Заполнение данных в корзине', async () => {
       await basket.fillTouristData();
+    });
+
+    await test.step('Бронирование', async () => {
+      await basket.booking();
+    });
+
+    await test.step('Страница успешного бронирования', async () => {
+      await basket.expectBookingSuccessPage();
     });
   });
 });

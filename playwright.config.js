@@ -34,7 +34,7 @@ const defaultVideo = recordAll ? 'on' : 'on-first-retry';
 
 /** @type {import('@playwright/test').ReporterDescription[]} */
 const reporters = [
-  ['line'],
+  ['dot'],
   ['html', { open: 'never' }],
 ];
 

@@ -5,7 +5,7 @@ const { AuthPage } = require('../pages/AuthPage');
 const pause = (page, ms = 1000) => page.waitForTimeout(ms);
 
 test.describe('Бронирование сертификата', () => {
-  test('Добавление сертификата в корзину', async ({ page }) => {
+  test('Бронирование сертификата', async ({ page }) => {
     test.setTimeout(120_000);
 
     const search = new SearchPage(page);
@@ -40,6 +40,14 @@ test.describe('Бронирование сертификата', () => {
 
     await test.step('Заполнение данных в корзине', async () => {
       await basket.fillTouristData();
+    });
+
+    await test.step('Оформление', async () => {
+      await basket.bookingCertificate();
+    });
+
+    await test.step('Страница успешного бронирования', async () => {
+      await basket.expectBookingSuccessPage();
     });
   });
 });

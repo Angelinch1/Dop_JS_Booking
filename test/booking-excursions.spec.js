@@ -3,7 +3,7 @@ const { SearchPage } = require('../pages/SearchPage');
 const { AuthPage } = require('../pages/AuthPage');
 
 test.describe('Бронирование экскурсий', () => {
-  test('Добавление в корзину экскурсий', async ({ page }) => {
+  test('Бронирование экскурсий', async ({ page }) => {
     test.setTimeout(120_000);
 
     const search = new SearchPage(page);
@@ -50,6 +50,14 @@ test.describe('Бронирование экскурсий', () => {
     await test.step('Заполнение данных в корзине', async () => {
       await basket.fillTouristData();
       await basket.fillHotelStay();
+    });
+
+    await test.step('Бронирование', async () => {
+      await basket.booking();
+    });
+
+    await test.step('Страница успешного бронирования', async () => {
+      await basket.expectBookingSuccessPage();
     });
   });
 });
