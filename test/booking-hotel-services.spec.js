@@ -29,7 +29,7 @@ test.describe('Бронирование услуг в отеле', () => {
     });
 
     await test.step('Дождаться выдачи', async () => {
-      await expect(page).toHaveURL(/searchhotelservices/i);
+      await expect(page).toHaveURL(/\/searchservices\/hotelservices/i);
       await search.waitForSearchResults();
     });
 

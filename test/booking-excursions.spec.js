@@ -29,7 +29,7 @@ test.describe('Бронирование экскурсий', () => {
     });
 
     await test.step('Дождаться выдачи', async () => {
-      await expect(page).toHaveURL(/searchexcursions/i);
+      await expect(page).toHaveURL(/\/searchservices\/excursions/i);
       await search.waitForSearchResults();
     });
 

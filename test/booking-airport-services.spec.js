@@ -29,7 +29,7 @@ test.describe('Бронирование услуг в аэропорту', () =>
     });
 
     await test.step('Дождаться выдачи', async () => {
-      await expect(page).toHaveURL(/searchairportservices/i);
+      await expect(page).toHaveURL(/\/searchservices\/airportservices/i);
       await search.waitForSearchResults();
     });
 
