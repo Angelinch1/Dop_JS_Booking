@@ -1,5 +1,33 @@
 stages:
+  - diagnose
   - test
+
+npm-network-check:
+  stage: diagnose
+  image: mcr.microsoft.com/playwright:v1.64.1-noble
+  script:
+    - |
+      node -e '
+      const https = require("https");
+      const url = "https://registry.npmjs.org/playwright-core/-/playwright-core-1.64.1.tgz";
+      const req = https.request(url, { method: "HEAD", timeout: 15000 }, res => {
+        console.log("HTTP status:", res.statusCode);
+        res.resume();
+        if (res.statusCode >= 400) process.exitCode = 1;
+      });
+      req.on("timeout", () => {
+        console.error("Timeout after 15 seconds");
+        req.destroy(new Error("timeout"));
+      });
+      req.on("error", err => {
+        console.error("Connection failed:", err.code || err.message);
+        process.exitCode = 1;
+      });
+      req.end();
+      '
+  rules:
+    - if: '$NPM_NETWORK_DIAGNOSTIC == "1"'
+    - when: never
 
 playwright-tests:
   stage: test
@@ -16,3 +44,7 @@ playwright-tests:
       - test-results/
       - allure-results/
       - allure-report/
+  rules:
+    - if: '$NPM_NETWORK_DIAGNOSTIC == "1"'
+      when: never
+    - when: on_success
