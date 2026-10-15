@@ -61,7 +61,7 @@ module.exports = defineConfig({
   /** По одному тесту за раз (без нескольких вкладок). Параллель: PLAYWRIGHT_WORKERS=4 npx playwright test */
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 1 : 0,
   workers: process.env.PLAYWRIGHT_WORKERS
     ? Number(process.env.PLAYWRIGHT_WORKERS)
     : 1,
