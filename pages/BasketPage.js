@@ -39,7 +39,7 @@ class BasketPage extends BasePage {
   }
 
   async fillTouristData() {
-    await this.page.locator('#lastName').fill('Петров');
+    await this.page.locator('#lastName').fill('Тест');
     await this._pause();
     await this.page.locator('#firstName').fill('Сергей');
     await this._pause();

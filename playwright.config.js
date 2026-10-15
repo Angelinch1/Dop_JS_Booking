@@ -1,7 +1,6 @@
 // @ts-check
 require('dotenv').config();
 const { defineConfig, devices } = require('@playwright/test');
-const { testItPlaywrightReporter, shouldUseTestItReporter } = require('./config');
 
 /** @param {string | undefined} raw @param {import('@playwright/test').TraceMode} fallback */
 function traceModeFromEnv(raw, fallback) {
@@ -51,10 +50,6 @@ if (String(process.env.ALLURE_REPORT || '').toLowerCase() === '1' || process.env
       },
     },
   ]);
-}
-
-if (shouldUseTestItReporter()) {
-  reporters.push(testItPlaywrightReporter);
 }
 
 /**

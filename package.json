@@ -24,7 +24,6 @@
     "allure-commandline": "^2.32.0",
     "allure-js-commons": "^3.7.0",
     "allure-playwright": "^3.2.0",
-    "dotenv": "^16.4.5",
-    "testit-adapter-playwright": "^4.0.4"
+    "dotenv": "^16.4.5"
   }
 }
